@@ -1,16 +1,10 @@
 # dingo_dingo_music
 
-A new Flutter application.
+A new Flutter application for school project.
+A music application that includes:
+1) Local music Player (Local storage)
+2) Online music Player (using deezer api)
+3) Online radio player
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+I do not own deezer, nor it's api. This project is for school purposes.
+This  uses API from Deezer to get music catalogue. Deezer API provides you some global parameters in order to simplify and organize your requests . Deezer give unlimited Access, without stress, without identification. Deezer Simple API provides a nice set of services to build up web applications allowing the discovery of Deezer's music catalogue.
