@@ -1,49 +1,62 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:dingo_dingo_music/extend/channel.dart';
+import 'package:dingo_dingo_music/extend/model.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dingo_dingo_music/extend/myPlayer.dart';
 
-class MyRadioPage extends StatelessWidget {
+
+class MyRadioPage extends StatefulWidget {
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Dingo Dingo Radio'),
-    ),
-      body: Column(
-        children: <Widget>[
-          Image.asset('assets/radio-cassette-3634616_1280.png')
-        ],
-        ),
+  _MyRadioPageState createState() => _MyRadioPageState();
+}
 
+class _MyRadioPageState extends State<MyRadioPage> {
+  List list;
 
-        drawer: Drawer(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children:<Widget> [
-                  DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.tealAccent,
-                      ),
-                        child: Text(
-                            'Dingo Dingo Menu',
-                            style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 24,
-                            ),
-                          ),
-                        ),
-
-                    ListTile(
-                      leading: Icon(Icons.my_library_music_rounded),
-                      title: Text("Music Player"),
-                    onTap: () => navigateToPage(context, 'home'),
-                    ),
-              ],
-                    ),
-                ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    fetch();
   }
 
-  navigateToPage(BuildContext context, String page) {
-    Navigator.of(context).pushNamedAndRemoveUntil(page, (Route<dynamic> route) => false);
+ fetch() async{
+    list= getChannels();
+    if(mounted)
+      setState((){});
+ }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScopedModel<PlayerModel>(
+        model: playerModel,
+        child: Scaffold(
+          body: list == null
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, index) => InkWell(
+              onTap: () {
+              Navigator.of(context).push(new MaterialPageRoute(
+              builder: (context) => MyPlayer(list[index])));
+              },
+                    child: Card(
+                    elevation: 3.0,
+                  child: Column(
+                  children: <Widget>[
+                  AspectRatio(
+                  aspectRatio: 18 / 11,
+                  child: Image.network(list[index].imageurl,
+                  fit: BoxFit.fill,
+                   )),
+                Text(list[index].title)
+                ],
+              ),
+            ),
+            ),
+          ),
+        ),
+    );
   }
 }

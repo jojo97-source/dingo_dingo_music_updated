@@ -25,7 +25,7 @@ class IconText extends StatelessWidget {
           color: iconColor,
         ),
         SizedBox(
-          height: 8,
+          height: 4,
         ),
         Text(
           string,

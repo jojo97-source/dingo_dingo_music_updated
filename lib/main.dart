@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:dingo_dingo_music/radio.dart';
+import 'package:dingo_dingo_music/radioPlay.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:audio_manager/audio_manager.dart';
 import 'package:dingo_dingo_music/songWidget.dart';
 import 'package:dingo_dingo_music/widget.dart';
+import 'package:dingo_dingo_music/onlinePlayer.dart';
 
 
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dingo Dingo Radio',
+      title: 'Dingo Dingo Music Player',
       theme: ThemeData(
         primaryColor: Colors.tealAccent,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         'home':(context) => MyHomePage(),
-        'secondPage': (context) => MyRadioPage(),
+        'secondPage': (context) => MyRadioPlay(),
+        'thirdPage': (context) => MyOnlinePlayer(),
       },
       initialRoute: 'home',
     );
@@ -90,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       home: Scaffold(
           appBar: AppBar(
             actions: <Widget>[
@@ -122,7 +123,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 });
               },
             )
-                : Text('Dingo Dingo Music'),
+                : Text('Dingo Dingo Music Player',
+                  style:TextStyle(color: Colors.black)),
           ),
 
           body: Column(
@@ -137,11 +139,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     List<SongInfo> songInfo = snapshot.data;
                     if (snapshot.hasData)
                       return SongWidget(songList: songInfo);
+
                     return Container(
                       height: MediaQuery
                           .of(context)
                           .size
-                          .height * 0.4,
+                          .height * 0.2,
                       child: Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -160,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                 ),
-              ),
+          ),
               bottomPanel(),
             ],
           ),
@@ -186,8 +189,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 ListTile(
                   leading: Icon(Icons.radio),
-                  title: Text('Dingo Radio'),
+                  title: Text('Dingo Dingo Radio'),
                   onTap: () => navigateToPage(context, 'secondPage'),
+                ),
+                ListTile(
+                  leading: Icon(Icons.music_note),
+                  title: Text('Dingo Dingo Online Player'),
+                  onTap: () => navigateToPage(context, 'thirdPage'),
                 ),
               ],
             ),
@@ -263,11 +271,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget bottomPanel() {
     return Column(children: <Widget>[
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         child: songProgress(context),
       ),
       Container(
-        padding: EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: 35),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -280,13 +288,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     onPressed: () => audioManagerInstance.previous()),
               ),
-              backgroundColor: Colors.cyan.withOpacity(0.3),
+              backgroundColor: Colors.cyan,
             ),
             CircleAvatar(
               radius: 30,
               child: Center(
                 child: IconButton(
                   onPressed: () async {
+                    if (audioManagerInstance.isPlaying)
                     audioManagerInstance.playOrPause();
                   },
                   padding: const EdgeInsets.all(0.0),
@@ -300,7 +309,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             CircleAvatar(
-              backgroundColor: Colors.cyan.withOpacity(0.3),
+              backgroundColor: Colors.cyan,
               child: Center(
                 child: IconButton(
                     icon: Icon(

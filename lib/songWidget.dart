@@ -22,15 +22,15 @@ class SongWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: <Widget>[
-                    /*ClipRRect(
-                      child: Image.file(
-                        new File("${song.filePath}"),
+                    ClipRRect(
+                      child: Image(
+                        image: AssetImage("assets/music-player-2939936_640.jpg") ?? FileImage(File(song.albumArtwork)),
                         height: 90,
                         width: 150,
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.circular(5),
-                    ),*/
+                    ),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.5,
                       padding: const EdgeInsets.all(8.0),
@@ -77,11 +77,12 @@ class SongWidget extends StatelessWidget {
                                   .start("file://${song.filePath}", song.title,
                                   desc: song.displayName,
                                   auto: true,
-                                  cover: ('assets/radio-cassette-3634616_1280.png'))
+                                  cover:('assets/headsets-1971383_1280.jpg') ??(song.albumArtwork))
                                   .then((err) {
                                 print(err);
                               });
                             },
+
                             child: IconText(
                               iconData: Icons.play_circle_outline,
                               iconColor: Colors.teal,
@@ -89,7 +90,7 @@ class SongWidget extends StatelessWidget {
                               textColor: Colors.black,
                               iconSize: 25,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
